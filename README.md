@@ -1,6 +1,6 @@
 # clojure-ants
 
-FIXME: description
+Rich Hickey ants simulation example in Clojure 1.6.
 
 ## Installation
 
