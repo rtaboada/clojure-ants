@@ -220,10 +220,7 @@
     (.fillRect (* x scale) (* y scale) scale scale)))
 
 (defn render-ant [ant ^Graphics g x y]
-  (let [black (. (new Color 0 0 0 255) (getRGB))
-        gray (. (new Color 100 100 100 255) (getRGB))
-        red (. (new Color 255 0 0 255) (getRGB))
-        [hx hy tx ty] ({0 [2 0 2 4]
+  (let [[hx hy tx ty] ({0 [2 0 2 4]
                         1 [4 0 0 4]
                         2 [4 2 0 2]
                         3 [4 4 0 0]
@@ -234,17 +231,17 @@
                         (:dir ant))]
     (doto g
       (.setColor (if (:food ant)
-                  (new Color 255 0 255 255)
-                  (new Color 0 0 0 255)))
+                  (Color. 255 0 255 255)
+                  (Color. 0 0 0 255)))
       (.drawLine (+ hx (* x scale)) (+ hy (* y scale))
-                (+ tx (* x scale)) (+ ty (* y scale))))))
+                 (+ tx (* x scale)) (+ ty (* y scale))))))
 
 (defn render-place [g p x y]
   (when (pos? (:pher p))
-    (fill-cell g x y (new Color 0 255 0
+    (fill-cell g x y (Color. 0 255 0
                           (int (min 255 (* 255 (/ (:pher p) pher-scale)))))))
   (when (pos? (:food p))
-    (fill-cell g x y (new Color 255 0 0
+    (fill-cell g x y (Color. 255 0 0
                           (int (min 255 (* 255 (/ (:food p) food-scale)))))))
   (when (:ant p)
     (render-ant (:ant p) g x y)))
@@ -269,11 +266,11 @@
 
 (def panel (doto (proxy [JPanel] []
                    (paint [g] (render g)))
-             (.setPreferredSize (new Dimension
-                                    (* scale dim)
-                                    (* scale dim)))))
+             (.setPreferredSize (Dimension.
+                                  (* scale dim)
+                                  (* scale dim)))))
 
-(def frame (doto (new JFrame) (.add panel) (.pack) (.show)))
+(def frame (doto (JFrame.) (.add panel) (.pack) (.show)))
 
 (def animator (agent nil))
 
